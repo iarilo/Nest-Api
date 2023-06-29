@@ -10,16 +10,37 @@ export enum TopLevelCategory {
 
 export type TopPageDocument = HydratedDocument<TopPageModel>;
 
+class HhData {
+  @Prop({ required: true })
+  count: number;
+  @Prop({ required: true })
+  juniorSalary: number;
+  @Prop({ required: true })
+  middleSalary: number;
+  @Prop({ required: true })
+  seniorSalary: number;
+}
+
+class TopPageAdvantages {
+  @Prop({ required: true })
+  title: string;
+  @Prop({ required: true })
+  description: string;
+}
+
 @Schema()
 export class TopPageModel {
   @Prop({ required: true })
   _id: string;
 
-  @Prop({ required: true })
+  @Prop({ enum: TopLevelCategory })
   firstCategory: TopLevelCategory;
 
   @Prop({ required: true })
   secondCategory: string;
+
+  @Prop({ required: true, unique: true })
+  alias: string;
 
   @Prop({ required: true })
   title: string;
@@ -27,19 +48,11 @@ export class TopPageModel {
   @Prop({ required: true })
   category: string;
 
-  @Prop()
-  hh?: {
-    count: number;
-    juniorSalary: number;
-    middleSalary: number;
-    seniorSalary: number;
-  };
+  @Prop(HhData)
+  hh?: HhData;
 
-  @Prop(String)
-  advantages: {
-    title: string;
-    description: string;
-  }[];
+  @Prop([TopPageAdvantages])
+  advantages: [TopPageAdvantages];
 
   @Prop({ required: true })
   seoText: string;

@@ -11,7 +11,8 @@ export class Post {
 
   @Prop({ required: true })
   text: string;
-
+  // MSchema.Types.ObjectId это  = id user
+  // User.name  = названию схемы схема из модуля
   @Prop({ type: MSchema.Types.ObjectId, ref: User.name })
   author: User;
 }
