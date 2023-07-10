@@ -3,11 +3,8 @@ import { HydratedDocument, Types } from 'mongoose';
 
 export type ReviewDocument = HydratedDocument<ReviewModel>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class ReviewModel {
-  @Prop({ required: true })
-  _id: string;
-
   @Prop({ required: true })
   name: string;
 
@@ -19,9 +16,6 @@ export class ReviewModel {
 
   @Prop({ required: true })
   rating: number;
-
-  @Prop({ required: true })
-  createdAd: Date;
 
   @Prop({ type: Types.ObjectId })
   productId: Types.ObjectId;
