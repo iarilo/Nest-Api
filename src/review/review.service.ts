@@ -14,41 +14,51 @@ export class ReviewService {
 
   //Вся база данных
   async rewiewAll(): Promise<ReviewModel[]> {
-    const review = await this.reviewModel.find();
-    console.log('Вся база данных: ', review);
+    const review = await this.reviewModel.find().exec();
+    //console.log('Вся база данных: ', review);
+
     return review;
   }
 
   //Создание новой записи в базе данных
   async create(dto: CreateReviewDto): Promise<ReviewModel> {
+    //async create(dto: ReviewModel): Promise<ReviewModel> {
     return await this.reviewModel.create(dto);
   }
 
   // Обновление данных
   async updateReview(id: string, review: ReviewModel): Promise<ReviewModel> {
-    return await this.reviewModel.findByIdAndUpdate(id, review, {
-      new: true,
-      runValidators: true,
-    });
+    return await this.reviewModel
+      .findByIdAndUpdate(id, review, {
+        new: true,
+        runValidators: true,
+      })
+      .exec();
   }
 
   // Удание новой записи из базы данных
   async delete(id: string): Promise<ReviewModel | null> {
     return await this.reviewModel.findByIdAndDelete(id).exec();
   }
+  //.........................................
+  //Поиск по id  продукта
+  // async findByProductId(productId: string): Promise<ReviewModel[]> {
+  //   return await this.reviewModel.find({ productId: productId }).exec();
+  // }
 
-  // Поиск по id  продукта
   async findByProductId(productId: string): Promise<ReviewModel[]> {
     return await this.reviewModel
       .find({ productId: new Types.ObjectId(productId) })
       .exec();
   }
 
+  //...........................................
+
   // Удание всех отзовов этого товара
   async deleteBayProductId(productId: string) {
     return await this.reviewModel
       .deleteMany({
-        productId: new Types.ObjectId(productId),
+        productId: new Types.ObjectId(productId).toHexString(),
       })
       .exec();
   }

@@ -27,6 +27,7 @@ export class ReviewController {
   //метод    создания
   @Post('create')
   async create(@Body() dto: CreateReviewDto) {
+    // async create(@Body() dto: ReviewModel) {
     return this.reviewService.create(dto);
   }
 
@@ -46,11 +47,15 @@ export class ReviewController {
       throw new HttpException(REVIEW_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
   }
-  // метод  получения
+  //....................................
+  //метод  получения
   @Get('byProduct/:productId')
   async getByProduct(@Param('productId') productId: string) {
     return this.reviewService.findByProductId(productId);
   }
+  //...................................
+
+  // Удание всех отзовов этого товара
 }
 
 // @Controller('review')
