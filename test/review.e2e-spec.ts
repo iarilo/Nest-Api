@@ -138,8 +138,8 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
   // ================================================
- // Функция создания
-   it('/review/create (Post)', async () => {
+ //Функция создания
+   it('/review/create (POST)', async () => {
     return (
       request(app.getHttpServer())
      .post('/review/create')
@@ -151,6 +151,21 @@ describe('AppController (e2e)', () => {
         })
     );
   });
+
+  //   create тэст на валидацию
+  it('/review/create (POST) - fail', async () => {
+    return (
+      request(app.getHttpServer())
+     .post('/review/create')
+     .send({...testDto,  rating: 0})
+     .expect(400)
+     .then(({body}: request.Response) => {
+        console.log('ответ: ', body);
+     })
+    
+    );
+  });
+
 
   //===================================================
   // Функция ПОИСКА
@@ -165,12 +180,13 @@ describe('AppController (e2e)', () => {
   //     });
   // });
 
-  it('/review/byProduct/:productId (Get)', async  () => {
+  it('/review/byProduct/:productId (GET)', async  () => {
     return request(app.getHttpServer())
    .get('/review/byProduct/' + productId )
    .expect(200)
    .then(({body}: request.Response)=> {
     expect(body.length).toBe(1)
+    //expect(body.length)
    });
 });
 

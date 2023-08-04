@@ -8,11 +8,16 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { REVIEW_NOT_FOUND } from './review.constants';
 import { ReviewModel } from './review.model/review.model';
+import { JwtAuthGuard } from 'src/auth/guards/jwt_guard';
+import { UserEmail } from 'src/decorators/user_email_decorator';
 
 @Controller('review')
 export class ReviewController {
@@ -25,6 +30,7 @@ export class ReviewController {
   }
 
   //метод    создания
+  @UsePipes(new ValidationPipe())
   @Post('create')
   async create(@Body() dto: CreateReviewDto) {
     // async create(@Body() dto: ReviewModel) {
@@ -40,6 +46,7 @@ export class ReviewController {
     return this.reviewService.updateReview(id, update);
   }
   // метод  удаления
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string) {
     const deleteDoc = await this.reviewService.delete(id);
@@ -49,8 +56,14 @@ export class ReviewController {
   }
   //....................................
   //метод  получения
+  @UseGuards(JwtAuthGuard)
   @Get('byProduct/:productId')
-  async getByProduct(@Param('productId') productId: string) {
+  async getByProduct(
+    @Param('productId') productId: string,
+    @UserEmail() email: string
+    
+    ){
+    console.log('Email: ', email)
     return this.reviewService.findByProductId(productId);
   }
   //...................................
@@ -59,6 +72,6 @@ export class ReviewController {
 }
 
 // @Controller('review')
-// export class ReviewController {}
+// export class ReviewController {}Ё
 
 // npm run start:dev

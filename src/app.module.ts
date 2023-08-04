@@ -13,7 +13,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.DB_URI, { dbName: 'Top-api' }),
     // UsersModule,
-    // AuthModule,
+     AuthModule,
     // TopPageModule,
     // ProductModule,
     ReviewModule,
