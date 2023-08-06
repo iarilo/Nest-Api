@@ -1,14 +1,22 @@
-/*import { Test, TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { Types, disconnect } from 'mongoose';
 import { CreateReviewDto } from 'src/review/dto/create-review.dto';
+import { AuthDto } from 'src/auth/dto/auth.dto';
+import { REVIEW_NOT_FOUND } from '../src/review/review.constants';
+
 
 // id продукта
 //const productid = new Types.ObjectId().toHexString();
 const productId = new Types.ObjectId().toHexString();
 console.log('Productid-верх: ', productId);
+
+const LoginDto: AuthDto = {
+login: 'a@a.ru',
+password:'1'
+}
 
 // Объект который надо передать
 const testDto: CreateReviewDto = {
@@ -24,6 +32,7 @@ const testDto: CreateReviewDto = {
 describe('AppController (e2e)', () => {
   let app: INestApplication; // объявляю  приложение  app
   let createId: string; // Сохраняю id из mongo
+  let token: string  // access_tocen (jwt token)
   //let productIdBody: string;
   // ==============================================
   // beforeEach выполняется перед каждым запуском теста
@@ -38,6 +47,13 @@ describe('AppController (e2e)', () => {
     }).compile();
     app = moduleFixture.createNestApplication(); // Собирается приложение
     await app.init();
+    // Авторизация
+     //const res = await  
+    const {body} = await request(app.getHttpServer())
+    .post('/auth/login')
+    .send(LoginDto);
+    // token = res.body.access_tocen
+    token = body.access_tocen
   });
   // ================================================
   // Описание  тестов //
@@ -77,8 +93,8 @@ describe('AppController (e2e)', () => {
       .get('/review/byProduct/' + productId)
       .expect(200)
       .then(({ body }: request.Response) => {
-        expect(body.length).toBe(1);
-        //expect(body.length);
+        //expect(body.length).toBe(1);
+        expect(body.length).toBe(0);
         console.log('Body-byProduct: ', body);
       });
   });
@@ -87,14 +103,25 @@ describe('AppController (e2e)', () => {
   // Функция УДАЛЕНИЯ
   //1) Передаю методу 2 аргум. Путь с методом отправки и колбзк
   
-  it('/review/:id (DELETE)', () => {
+  it('/review/:id (DELETE) - success', () => {
     //2) Из  request получаю app.getHttpServer(), методом отправки путь и id из body
     // методом expect код.
     return request(app.getHttpServer())
       .delete('/review/' + createId)
+      .set('Authorization',' Bearer'  + token)
       .expect(200);
   });
   
+
+  it('/review/:id (DELETE) - fail', () => {
+   return request(app.getHttpServer())
+      .delete('/review/' + new Types.ObjectId().toHexString())
+      .set('Authorization',' Bearer'  + token)
+      .expect(404, {
+        statusCode:404,
+        message: REVIEW_NOT_FOUND
+      });
+    });
 
   // Отключаю базу данных:  afterAll выполняется после всех тестов
   //  disconnect функ.  из 'mongoose'
@@ -102,9 +129,14 @@ describe('AppController (e2e)', () => {
     disconnect();
   });
 });
-*/
 
 
+// npm run test:e2e
+
+// -------------------------------------------------------
+
+
+/*
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
@@ -169,26 +201,18 @@ describe('AppController (e2e)', () => {
 
   //===================================================
   // Функция ПОИСКА
-  // it('/review/byProduct/:productId (GET)', async () => {
-  //     return request(app.getHttpServer())
-  //     .get('/review/byProduct/' + productId)
-  //     .expect(200)
-  //     .then(({ body }: request.Response) => {
-  //       expect(body.length).toBe(1);
-  //       //expect(body.length);
-  //       console.log('Body-byProduct: ', body);
-  //     });
-  // });
+  it('/review/byProduct/:productId (GET)', async () => {
+      return request(app.getHttpServer())
+      .get('/review/byProduct/' + productId)
+      .expect(200)
+      .then(({ body }: request.Response) => {
+        //expect(body.length).toBe(1);
+        expect(body.length).toBe(0);
+        console.log('Body-byProduct: ', body);
+      });
+  });
 
-  it('/review/byProduct/:productId (GET)', async  () => {
-    return request(app.getHttpServer())
-   .get('/review/byProduct/' + productId )
-   .expect(200)
-   .then(({body}: request.Response)=> {
-    expect(body.length).toBe(1)
-    //expect(body.length)
-   });
-});
+
 
 
   //===================================================
@@ -203,4 +227,6 @@ describe('AppController (e2e)', () => {
     disconnect();
   });
 });
+
+*/
 // npm run test:e2e

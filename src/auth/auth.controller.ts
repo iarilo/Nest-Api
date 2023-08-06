@@ -19,10 +19,18 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(201) 
-  async login (@Body() dto: AuthDto) {
-    const user = await this.authService.validateUser(dto.login,dto.password);
-   return this.authService.login(user.email); 
+  // async login (@Body() dto: AuthDto ) {
+  // const user = await this.authService.validateUser(dto.login, dto.password);
+  // return  this.authService.login( user.email)
+  // }
+
+  async login(@Body() {login, password}: AuthDto) {
+    // Получаю email
+   const user = await this.authService.validateUser(login, password);
+   // Передая email в метод login для формирования jwt
+   return this.authService.login(user.email);
   }
+
 
 }
 
