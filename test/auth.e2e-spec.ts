@@ -6,94 +6,23 @@ import {  disconnect } from 'mongoose';
 import { AuthDto } from 'src/auth/dto/auth.dto';
 
 
-
-const loginDto: AuthDto = {
-	login: 'a@a.ru',
-	password: '1'
-};
-
-describe('AuthController (e2e)', () => {
-	let app: INestApplication;
-	let createdId: string;
-	let token: string;
-
-	beforeEach(async () => {
-		const moduleFixture: TestingModule = await Test.createTestingModule({
-			imports: [AppModule],
-		}).compile();
-
-		app = moduleFixture.createNestApplication();
-		await app.init();
-	});
-
-	it('/auth/login (POST) - success', async (done) => {
-		return request(app.getHttpServer())
-			.post('/auth/login')
-			.send(loginDto)
-			.expect(200)
-			.then(({ body }: request.Response) => {
-				expect(body.access_token).toBeDefined();
-				done();
-			});
-	});
-
-	it('/auth/login (POST) - fail password', () => {
-		return request(app.getHttpServer())
-			.post('/auth/login')
-			.send({ ...loginDto, password: '2' })
-			.expect(401, {
-				statusCode: 401,
-				message: "Неверный пароль",
-				error: "Unauthorized"
-			});
-	});
-
-	it('/auth/login (POST) - fail password', () => {
-		return request(app.getHttpServer())
-			.post('/auth/login')
-			.send({ ...loginDto, login: 'aaa@a.ru' })
-			.expect(401, {
-				statusCode: 401,
-				message: "Пользователь с таким email не найден",
-				error: "Unauthorized"
-			});
-	});
-
-	afterAll(() => {
-		disconnect();
-	});
-});
-
-
-
-
-
-/*
 const loginDto: AuthDto = {
     login: 'a@a.ru',
     password:'1'
     }
   //================================================
-    // описание группы тестов
+   
     describe('AuthController (e2e)', () => {
-      let app: INestApplication; // объявляю  приложение  app
- // ==============================================
-      // beforeEach выполняется перед каждым запуском теста
-      // beforeAll выполняется перед всем
-      // afterEach выполняется после запуска теста
-      // afterAll выполняется после всех тестов
-    
-      beforeEach(async () => {
-        // Создаётся тестовый модуль для запуска всего приложения
-        const moduleFixture: TestingModule = await Test.createTestingModule({
+      let app: INestApplication; 
+       beforeEach(async () => {
+       const moduleFixture: TestingModule = await Test.createTestingModule({
           imports: [AppModule],
         }).compile();
-        app = moduleFixture.createNestApplication(); // Собирается приложение
+        app = moduleFixture.createNestApplication(); 
         await app.init();
        
       });
       // ================================================
-      // Описание  тестов //
       // Метод create
       it('/auth/login (Post)', async () => {
         return (
@@ -104,8 +33,6 @@ const loginDto: AuthDto = {
             .send(loginDto)
             // Что получаем
             .expect(200)
-             // разбираю ответ и получаю id из mongo//
-            //  1)Получаю body из Response
             .then(({ body }: request.Response) => {
             expect(body.access_tocen).toBeDefined();
             })
@@ -153,12 +80,12 @@ const loginDto: AuthDto = {
          //====================================================
 
       // Отключаю базу данных:  afterAll выполняется после всех тестов
-      //  disconnect функ.  из 'mongoose'
+  
       afterAll(() => {
         disconnect();
       });
     });
-*/
+
     // npm run test:e2e
 
 

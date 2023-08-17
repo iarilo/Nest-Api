@@ -15,7 +15,7 @@ import { ConfigModule } from '@nestjs/config';
     // UsersModule,
      AuthModule,
     // TopPageModule,
-    // ProductModule,
+     ProductModule,
     ReviewModule,
   ],
   controllers: [AppController],

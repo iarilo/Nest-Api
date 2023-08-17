@@ -10,11 +10,9 @@ class ProductCharacteristic {
   value: string;
 }
 
-@Schema()
+@Schema({ timestamps: true })
 export class ProductModel {
-  @Prop({ required: true })
-  _id: number;
-
+  
   @Prop({ required: true })
   image: string;
 
@@ -22,16 +20,13 @@ export class ProductModel {
   title: string;
 
   @Prop({ required: true })
-  price: string;
+  price: number
 
   @Prop({ required: true })
-  oldPrice: number;
+  oldPrice?: number;
 
   @Prop({ required: true })
   credit: number;
-
-  @Prop({ required: true })
-  calculatedRating: number;
 
   @Prop({ required: true })
   description: string;

@@ -33,7 +33,6 @@ export class ReviewController {
   @UsePipes(new ValidationPipe())
   @Post('create')
   async create(@Body() dto: CreateReviewDto) {
-    // async create(@Body() dto: ReviewModel) {
     return this.reviewService.create(dto);
   }
 
@@ -61,17 +60,14 @@ export class ReviewController {
   async getByProduct(
     @Param('productId') productId: string,
     @UserEmail() email: string
-    
-    ){
-    console.log('Email: ', email)
-    return this.reviewService.findByProductId(productId);
+     ){
+        return this.reviewService.findByProductId(productId);
   }
   //...................................
 
-  // Удание всех отзовов этого товара
+
 }
 
-// @Controller('review')
-// export class ReviewController {}Ё
+
 
 // npm run start:dev

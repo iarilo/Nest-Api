@@ -15,15 +15,12 @@ export class ReviewService {
   //Вся база данных
   async rewiewAll(): Promise<ReviewModel[]> {
     const review = await this.reviewModel.find().exec();
-    //console.log('Вся база данных: ', review);
-
     return review;
   }
 
   //Создание новой записи в базе данных
   async create(dto: CreateReviewDto): Promise<ReviewModel> {
-    //async create(dto: ReviewModel): Promise<ReviewModel> {
-    return await this.reviewModel.create(dto);
+  return await this.reviewModel.create(dto);
   }
 
   // Обновление данных

@@ -24,6 +24,10 @@ export class AuthService {
      });
      return newUser.save();
      };
+
+     async allUser(dto: AuthDto): Promise<AuthDto[]>{
+      return this.userModel.find(dto)
+     }
      
      async findUser (email: string) {
      return this.userModel.findOne({email}).exec()
