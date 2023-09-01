@@ -1,15 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ReviewModel } from '../review/review.model/review.model';
 import { Model, Types } from 'mongoose';
 import { CreateReviewDto } from './dto/create-review.dto';
+// import { ProductModel } from 'src/product/product.model/product.model';
+import { ProductModel } from '../product/product.model/product.model';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class ReviewService {
   constructor(
     //Доступ к модели из ReviewModel
-    @InjectModel(ReviewModel.name)
+    @InjectModel(ReviewModel.name )
     private readonly reviewModel: Model<ReviewModel>,
+    @InjectModel(ProductModel.name )
+    private readonly productModel: Model<ProductModel>
+  
   ) {}
 
   //Вся база данных
@@ -18,11 +24,21 @@ export class ReviewService {
     return review;
   }
 
-  //Создание новой записи в базе данных
-  async create(dto: CreateReviewDto): Promise<ReviewModel> {
-  return await this.reviewModel.create(dto);
+  async findById (dto: CreateReviewDto){
+    return await this.reviewModel.findById(dto.productId).populate('product');
   }
 
+  // --------------------------------------------
+//Создание новой записи в базе данных
+  async create(dto: CreateReviewDto): Promise<ReviewModel> {
+    const productItem = await this.productModel.findById(dto.productId);
+    const reviewItem = await this.reviewModel.create(dto);
+    reviewItem.productId = productItem._id;
+    await reviewItem.save();
+    return reviewItem;
+}
+    // ----------------------------------------------
+ 
   // Обновление данных
   async updateReview(id: string, review: ReviewModel): Promise<ReviewModel> {
     return await this.reviewModel
@@ -39,10 +55,7 @@ export class ReviewService {
   }
   //.........................................
   //Поиск по id  продукта
-  // async findByProductId(productId: string): Promise<ReviewModel[]> {
-  //   return await this.reviewModel.find({ productId: productId }).exec();
-  // }
-
+ 
   async findByProductId(productId: string): Promise<ReviewModel[]> {
     return await this.reviewModel
       .find({ productId: new Types.ObjectId(productId) })

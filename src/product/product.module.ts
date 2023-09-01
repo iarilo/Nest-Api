@@ -7,15 +7,14 @@ import {
   ProductSchemaFactory,
 } from './product.model/product.model';
 
+
+
 @Module({
   controllers: [ProductController],
   providers: [ProductService],
   imports: [
     MongooseModule.forFeature([
-      {
-        name: ProductModel.name,
-        schema: ProductSchemaFactory,
-      },
+      { name: ProductModel.name,schema: ProductSchemaFactory }
     ]),
   ],
 })

@@ -7,8 +7,8 @@ import { AuthDto } from 'src/auth/dto/auth.dto';
 
 
 const loginDto: AuthDto = {
-    login: 'a@a.ru',
-    password:'1'
+  login: "User-3@.ru",
+  password: "0123"
     }
   //================================================
    
@@ -52,7 +52,7 @@ const loginDto: AuthDto = {
             .expect(401,{
                 statusCode: 401,
                 message: "НЕ ПРАВИЛЬНО УКАЗАН ПАРОЛЬ ",
-                error: "Unprocessable Entity"
+                error: "Unauthorized"
             })
          );
       });

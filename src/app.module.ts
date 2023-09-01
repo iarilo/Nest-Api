@@ -14,7 +14,7 @@ import { ConfigModule } from '@nestjs/config';
     MongooseModule.forRoot(process.env.DB_URI, { dbName: 'Top-api' }),
     // UsersModule,
      AuthModule,
-    // TopPageModule,
+     TopPageModule,
      ProductModule,
     ReviewModule,
   ],

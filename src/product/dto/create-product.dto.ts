@@ -47,4 +47,6 @@ export class CreateProductDto {
    @Type(()=> ProductCharacteristicDto)// Из библиотеки 'class-transformer'
    // Указывает тип  валидации
    characteristics: [ProductCharacteristicDto];
+
+ 
 }

@@ -18,6 +18,7 @@ import { REVIEW_NOT_FOUND } from './review.constants';
 import { ReviewModel } from './review.model/review.model';
 import { JwtAuthGuard } from '../auth/guards/jwt_guard';
 import { UserEmail } from '../decorators/user_email_decorator';
+import { IdValidationPipes } from 'src/pipes/ad-validation.pipe';
 
 @Controller('review')
 export class ReviewController {
@@ -29,6 +30,10 @@ export class ReviewController {
     return this.reviewService.rewiewAll();
   }
 
+  @Get("ById")
+  async findId(@Body() dto: CreateReviewDto){
+  return this.reviewService.findById(dto);
+  }
   //метод    создания
   @UsePipes(new ValidationPipe())
   @Post('create')
@@ -39,15 +44,15 @@ export class ReviewController {
   //Обновление данных
   @Put(':id')
   async reviewUpdate(
-    @Param('id') id: string,
+    @Param('id',IdValidationPipes) id: string,
     @Body() update: ReviewModel,
   ): Promise<ReviewModel> {
     return this.reviewService.updateReview(id, update);
   }
   // метод  удаления
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async delete(@Param('id') id: string) {
+  async delete(@Param('id',IdValidationPipes) id: string) {
     const deleteDoc = await this.reviewService.delete(id);
     if (!deleteDoc) {
       throw new HttpException(REVIEW_NOT_FOUND, HttpStatus.NOT_FOUND);
@@ -55,10 +60,10 @@ export class ReviewController {
   }
   //....................................
   //метод  получения
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get('byProduct/:productId')
   async getByProduct(
-    @Param('productId') productId: string,
+    @Param('productId',IdValidationPipes) productId: string,
     @UserEmail() email: string
      ){
         return this.reviewService.findByProductId(productId);

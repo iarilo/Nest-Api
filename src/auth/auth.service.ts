@@ -42,7 +42,7 @@ export class AuthService {
       
       const pass = await compare(password, user.passwordHash);
       if(!pass){
-        throw new UnprocessableEntityException(WRONG_PASSWORD_ERROR);
+        throw new UnauthorizedException(WRONG_PASSWORD_ERROR);
       };
       return {email: user.email}
      };
