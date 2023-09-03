@@ -15,5 +15,5 @@ jobs:
           registry: docker.pkg.github.com
           name: docker.pkg.github.com/AlariCode/top-api/top-api
           username: ${{  github.actor }}
-          password: ${{ secrets.PASSWORD }}
+          password: ${{ github.actor  }}
           tags: "develop"
