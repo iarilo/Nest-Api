@@ -10,10 +10,12 @@ import {
 @Module({
   controllers: [TopPageController],
   providers: [TopPageService],
+ 
   imports: [
     MongooseModule.forFeature([
       { name: TopPageModel.name, schema: TopPageSchemaFactory },
     ]),
   ],
+  exports: [TopPageService]
 })
 export class TopPageModule {}

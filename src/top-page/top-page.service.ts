@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TopPageModel, TopPageDocument, TopLevelCategory } from './top-page.model/top-page.model';
 import { DocumentTopPageDto } from './dto/document-top-page.dto';
+
 
 @Injectable()
 export class TopPageService {
@@ -11,8 +12,8 @@ export class TopPageService {
 
   
     async createPage(dto: DocumentTopPageDto) {
-        return this.topPageModel.create(dto)
-    };
+    return this.topPageModel.create(dto)
+   };
 
     async allPage(dto: DocumentTopPageDto): Promise<TopPageModel[]> {
         return this.topPageModel.find(dto)
@@ -25,6 +26,11 @@ export class TopPageService {
 
     async findByAlias(alias: string){
         return this.topPageModel.findOne({alias}).exec()
+    };
+
+
+    async findAll(){
+        return this.topPageModel.find();
     };
   
 // ----------------------------------------------     

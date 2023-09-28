@@ -30,6 +30,7 @@ class TopPageAdvantages {
 }
 
 
+// @Schema({timestamps: true})
 @Schema()
 export class TopPageModel {
 
@@ -62,6 +63,12 @@ export class TopPageModel {
 
   @Prop([String])
   tags: [string];
+
+  @Prop( { type: Date, default: Date.now })
+  updatedAt:string
+
+  @Prop({ type: Date, default: Date.now })
+  createdAt: string
 }
 
 export const TopPageSchemaFactory = SchemaFactory.createForClass(TopPageModel);

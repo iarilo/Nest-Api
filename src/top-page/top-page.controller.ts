@@ -32,8 +32,21 @@ export class TopPageController {
   //@UseGuards(JwtAuthGuard)
   @Post('create')
   async create(@Body() dto: DocumentTopPageDto) {
-   return this.topPageService.createPage(dto)
+
+ const allPages = await this.topPageService.findAll();
+ const  aliasKey =  allPages.map( key => {
+  return key.alias
+ });
+
+    for(const elem  of aliasKey){
+    if (dto.alias === elem){
+    throw new NotFoundException(' alias повторяется')
+   };
   };
+
+  return this.topPageService.createPage(dto)
+ };
+
 
   // метод   получения
   @Get('all')
@@ -53,18 +66,23 @@ export class TopPageController {
    const page = await this.topPageService.findById(id)
    if(!page){
     throw new NotFoundException(NOT_FOUND_TOP_PAGE_ERROR);
+    }else{
+      return page
     };
-    return page
+    //return page
   };
   
   @Get('byAlias/:alias')
   async findByAlias(@Param('alias') alias: string){
+    console.log('Alias: ', alias)
   const aliasPage = await this.topPageService.findByAlias(alias);
+  console.log(' aliasPage: ',  aliasPage)
   if(!aliasPage){
     throw new NotFoundException(NOT_FOUND_TOP_PAGE_ERROR);
     };
     return aliasPage;
   }
+
 
   @Get('textSeatch/:text')
   async findByText(@Param('text') text: string) {
