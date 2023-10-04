@@ -19,10 +19,15 @@ import { ReviewModel } from './review.model/review.model';
 import { JwtAuthGuard } from '../auth/guards/jwt_guard';
 import { UserEmail } from '../decorators/user_email_decorator';
 import { IdValidationPipes } from 'src/pipes/ad-validation.pipe';
+import { privateDecrypt } from 'crypto';
+import { TelegramService } from 'src/telegram/telegram.service';
 
 @Controller('review')
 export class ReviewController {
-  constructor(private readonly reviewService: ReviewService) {}
+  constructor(
+    private readonly reviewService: ReviewService,
+    private readonly telegramService: TelegramService
+    ) {}
 
   //Вся база данных
   @Get()
@@ -39,7 +44,38 @@ export class ReviewController {
   @Post('create')
   async create(@Body() dto: CreateReviewDto) {
     return this.reviewService.create(dto);
+  };
+
+
+
+
+  // @Post('notify')
+  // async notify(@Body() dto: CreateReviewDto){
+  // const message = 
+  // `Имя:${dto.name}\n` +
+  // `Заголовок:${dto.title}\n` +
+  // `Описание:${dto.description}\n` +
+  // `Рэйтинг:${dto.rating}\n` +
+  // `Id продукта:${dto.productId}` 
+  //  return this.telegramService.sendMessage(message)
+  // }
+
+
+  
+  // Телеграм
+  @Post('notify')
+  async notify(@Body() dto: CreateReviewDto){
+
+    const message = 
+    `Имя: ${dto.name}\n` +
+    `Заголовок: ${dto.title}\n ` +
+    `Описание: ${dto.description}\n` +
+    `Рейтинг: ${dto.rating}\n` +
+    `ID Продукта: ${dto.productId}`
+    return this.telegramService.sendMessage(message)
   }
+ 
+
 
   //Обновление данных
   @Put(':id')
