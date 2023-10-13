@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsArray, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsDate, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 import { TopLevelCategory } from "../top-page.model/top-page.model";
 
  
@@ -12,21 +12,23 @@ import { TopLevelCategory } from "../top-page.model/top-page.model";
 
 
    export class HhDataDto {
-    @IsNumber()
-    count: number;
+    @IsString()
+    count: string;
     @IsNumber()
     juniorSalary: number;
     @IsNumber()
     middleSalary: number;
     @IsNumber()
     seniorSalary: number;
+    @IsDate()
+    updatedAt: Date;
   }
   
 
 export class DocumentTopPageDto {
    
     @IsEnum(TopLevelCategory)
-    firstCategory:[TopLevelCategory];
+    firstCategory: TopLevelCategory;
 
     @IsString()
     secondCategory: string;
@@ -60,4 +62,5 @@ export class DocumentTopPageDto {
     @IsArray()
     @IsString({each: true})
     tags: [string];
+
 }

@@ -6,35 +6,35 @@ export enum TopLevelCategory {
   Service,
   Boocs,
   Products,
-  addition
+  addition,
 }
 
 export type TopPageDocument = HydratedDocument<TopPageModel>;
 
-class HhData {
+export  class HhData {
   @Prop({ required: true })
-  count: number;
+  count: string;
   @Prop({ required: true })
   juniorSalary: number;
   @Prop({ required: true })
   middleSalary: number;
   @Prop({ required: true })
   seniorSalary: number;
+  @Prop({ required: true })
+  updatedAt: Date;
 }
 
-class TopPageAdvantages {
+export class TopPageAdvantages {
   @Prop({ required: true })
   title: string;
   @Prop({ required: true })
   description: string;
 }
 
-
 // @Schema({timestamps: true})
 @Schema()
 export class TopPageModel {
-
- @Prop({ enum: TopLevelCategory })
+  @Prop({ enum: TopLevelCategory })
   firstCategory: TopLevelCategory;
 
   @Prop({ required: true })
@@ -43,7 +43,7 @@ export class TopPageModel {
   @Prop({ required: true, unique: true })
   alias: string;
 
-  @Prop({text: true})
+  @Prop({ text: true })
   title: string;
 
   @Prop({ required: true })
@@ -52,10 +52,10 @@ export class TopPageModel {
   @Prop(HhData)
   hh?: HhData;
 
-  @Prop([TopPageAdvantages] )
+  @Prop([TopPageAdvantages])
   advantages: [TopPageAdvantages];
 
-  @Prop({ text: true})
+  @Prop({ text: true })
   seoText: string;
 
   @Prop({ required: true })
@@ -64,11 +64,11 @@ export class TopPageModel {
   @Prop([String])
   tags: [string];
 
-  @Prop( { type: Date, default: Date.now })
-  updatedAt:string
+  @Prop({ type: Date, default: Date.now })
+  updatedAt: string;
 
   @Prop({ type: Date, default: Date.now })
-  createdAt: string
+  createdAt: string;
 }
 
 export const TopPageSchemaFactory = SchemaFactory.createForClass(TopPageModel);

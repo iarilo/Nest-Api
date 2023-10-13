@@ -11,56 +11,31 @@ import { FilesModule } from './files/files.module';
 import { SitemapModule } from './sitemap/sitemap.module';
 import { TelegramModule } from './telegram/telegram.module';
 import { getTelegramConfig } from './config/telegram.config';
+import { HhModule } from './hh/hh.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.DB_URI, { dbName: 'Top-api' }),
-    // UsersModule,
-     AuthModule,
-     TopPageModule,
-     ProductModule,
+    AuthModule,
+    TopPageModule,
+    ProductModule,
     ReviewModule,
     FilesModule,
     SitemapModule,
-    TelegramModule.forRootAsync(
-         {
-            imports:[ConfigModule],
-            inject:[ConfigService],
-            useFactory:getTelegramConfig
-          }
-    )
+    TelegramModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getTelegramConfig,
+    }),
+    HhModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // .forRootAsync(
 //   // Построение конфигурации
@@ -68,6 +43,6 @@ export class AppModule {}
 //     imports:[ConfigModule],
 //     inject:[ConfigService],
 //     useFactory:getTelegramConfig
-// //useFactory  принимает из getTelegramConfig token и chatID         
+// //useFactory  принимает из getTelegramConfig token и chatID
 //   }
 // )

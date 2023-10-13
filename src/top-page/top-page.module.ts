@@ -6,16 +6,18 @@ import {
   TopPageModel,
   TopPageSchemaFactory,
 } from './top-page.model/top-page.model';
+import { HhModule } from 'src/hh/hh.module';
 
 @Module({
   controllers: [TopPageController],
   providers: [TopPageService],
- 
+
   imports: [
     MongooseModule.forFeature([
       { name: TopPageModel.name, schema: TopPageSchemaFactory },
     ]),
+    HhModule,
   ],
-  exports: [TopPageService]
+  exports: [TopPageService],
 })
 export class TopPageModule {}
